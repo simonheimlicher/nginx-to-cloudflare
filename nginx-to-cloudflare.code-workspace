@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "*.html": "gohtml",
+      "robots.txt": "gohtml",
+      "index.redir*": "gohtml",
+      "index.aliases": "gohtml",
+      "index.urls": "gohtml"
+    },
+    "[python]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "charliermarsh.ruff"
+    }
+  }
+}

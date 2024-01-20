@@ -1,0 +1,16 @@
+{
+  "evenBetterToml.schema.associations": {
+    "*.toml": "https://json.schemastore.org/hugo.json"
+  },
+  "markdownlint.config": {
+    "default": true,
+    "no-inline-html": false
+  },
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
+  },
+}

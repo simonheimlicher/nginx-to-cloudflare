@@ -1,0 +1,33 @@
+{{- /* -}}
+# Complete list of URL paths by current pages
+# Add be below TOML lines to config.toml to make sure the output file `public/_urls` is generated
+# disableAliases = true
+# [outputs]
+# home = [ "HTML", "RSS", "urls" ]
+#
+# [mediaTypes]
+#   [mediaTypes."text/urls"]
+#     delimiter = ""
+#
+# [outputFormats]
+# [outputFormats.urls]
+# mediatype = "text/urls"
+# baseName = "_urls"
+# isPlainText = true
+# notAlternative = true
+{{- */ -}}
+
+{{- range .Sites }}
+  {{- $allUrls := slice }}
+  {{- range .Pages }}
+    {{- $allUrls = append .RelPermalink $allUrls }}
+    {{- range .Resources.Match "*" }}
+      {{- if ne .ResourceType "page" }} {{/* Exclude nested pages */}}
+        {{- $allUrls = append .RelPermalink $allUrls  }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- range (sort $allUrls) }}
+    {{- printf "%s\n" . }}
+  {{- end }}
+{{- end -}}
