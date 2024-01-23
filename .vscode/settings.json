@@ -13,4 +13,9 @@
       "other": "on"
     }
   },
+  "python.testing.pytestArgs": [
+    "log-analysis"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
 }

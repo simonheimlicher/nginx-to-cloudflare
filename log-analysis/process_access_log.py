@@ -1,35 +1,19 @@
 import re
 import csv
 from collections import defaultdict
-import sys
 
 from constants import (
-    ACCESS_LOG_PROCESSED_FILE,
-    ACCESS_LOG_INPUT_FILE,
     COLUMNS_ACCESS_LOG,
-    INPUT_DIR,
-    INTERMEDIATE_DIR,
-    ORIGINAL_DOMAIN,
-    REMOTE_ADDR,
-    REMOTE_USER,
-    REQUEST_TIMESTAMP,
-    REQUEST_METHOD,
-    REQUEST_URI,
-    REQUEST_STATUS_CODE,
-    RESPONSE_BYTES_SENT,
-    REQUEST_REFERER,
-    REQUEST_USER_AGENT,
 )
 
-
-# Updated regular expression to match all relevant fields in log entries
+# Regular expression to match all relevant fields in log entries
 log_pattern = re.compile(
     r'(\d+\.\d+\.\d+\.\d+) - (\S+) \[(.*?)\] "(GET|POST|PUT|DELETE|HEAD) (\S+) HTTP/\d\.\d" (\d{3}) (\d+) "(.*?)" "(.*?)"'
 )
 
 
 def process_log_file(file_path):
-    logs = defaultdict(
+    log_entry = defaultdict(
         lambda: {
             "remote_addr": None,
             "remote_user": None,
@@ -59,7 +43,7 @@ def process_log_file(file_path):
                     http_user_agent,
                 ) = match.groups()
                 key = (remote_addr, path)
-                logs[key].update(
+                log_entry[key].update(
                     {
                         "remote_addr": remote_addr,
                         "remote_user": remote_user,
@@ -73,7 +57,7 @@ def process_log_file(file_path):
                     }
                 )
 
-    return logs
+    return log_entry
 
 
 def write_to_csv(data, output_file):
@@ -95,24 +79,3 @@ def write_to_csv(data, output_file):
                     info["http_user_agent"],
                 ]
             )
-
-
-def main():
-    if not INPUT_DIR.exists():
-        sys.exit(1)
-
-    resolved_input_dir = INPUT_DIR.resolve()
-    if not resolved_input_dir.is_dir():
-        sys.exit(1)
-
-    # Ensure INTERMEDIATE_DIR exists
-    INTERMEDIATE_DIR.mkdir(parents=True, exist_ok=True)
-    logs = process_log_file(ACCESS_LOG_INPUT_FILE)
-    write_to_csv(logs, ACCESS_LOG_PROCESSED_FILE)
-    print(
-        f"Access log file {ACCESS_LOG_INPUT_FILE} processed and written to {ACCESS_LOG_PROCESSED_FILE}"
-    )
-
-
-if __name__ == "__main__":
-    main()

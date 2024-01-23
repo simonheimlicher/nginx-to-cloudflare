@@ -60,3 +60,4 @@ env*
 *.env*
 /log-analysis/validation
 *.ipynb
+/log-analysis/logs
